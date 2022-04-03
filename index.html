@@ -1,0 +1,94 @@
+<HTML>
+<HEAD>
+<TITLE> Substitution Ciphers</TITLE>
+<SCRIPT Language="Javascript">
+
+var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var code = "";
+
+function reset() {
+		  document.CryptoForm.PlainText.value = "";
+}
+
+function Permute() { 
+
+//create a random permutation of the alphabet
+	
+	
+	result = "";
+	
+	for (var i=0; i<25; i++){
+		where = (i+1) +  Math.floor((25-i) * Math.random());
+		subLetter = alpha.charAt(where);
+		result += subLetter;
+		alpha = 
+		alpha.substring(0, i) + subLetter + alpha.substring(i+1,where) +
+		 alpha.charAt(i) + alpha.substring(where + 1, alpha.length);
+	}
+
+	result+=alpha.charAt(25);
+
+	return result;
+
+}
+
+function Encode() {
+	
+	plaintext = document.CryptoForm.PlainText.value.toUpperCase();
+	ciphertext = "";
+
+	alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	for (var i=0; i<plaintext.length; i++) {
+
+	 thisChar = plaintext.charAt(i);
+	 ind = alpha.indexOf(thisChar);
+
+	 if (ind == -1)
+		ciphertext += thisChar;
+		else
+		ciphertext += code.charAt(ind);
+	}
+
+	document.CryptoForm.PlainText.value = ciphertext;
+
+	return ciphertext; 
+}
+
+function Decode() {
+	
+	ciphertext = document.CryptoForm.PlainText.value.toUpperCase();
+	plaintext = "";
+
+	alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	for (var i=0; i<ciphertext.length; i++) {
+
+	 thisChar = ciphertext.charAt(i);
+	 ind = code.indexOf(thisChar);
+
+	 if (ind == -1)
+		plaintext += thisChar;
+		else
+		plaintext += alpha.charAt(ind);
+	}
+
+	document.CryptoForm.PlainText.value = plaintext;
+
+	return plaintext; 
+}
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR=purple TEXT=white ONLOAD="code=Permute(); PlainText.value='';" >
+<FORM NAME="CryptoForm">
+<H2> Enter plain text to be encrypted below: </H2>
+  <TEXTAREA NAME="PlainText" ROWS=6 COLS=30 SIZE=4 VALUE=""> </TEXTAREA>
+  <HR>
+  <INPUT TYPE = "button" VALUE = "Encode" ONCLICK = "Encode()"> 
+  <INPUT TYPE = "button" VALUE = "Decode" ONCLICK = "Decode()"> 
+  <INPUT TYPE="button" VALUE="ShowCipherAlphabet" ONCLICK="alert(code);">
+<BR> <INPUT TYPE="button" VALUE="Try Something New " ONCLICK="reset()">
+</FORM></BODY></HTML>
